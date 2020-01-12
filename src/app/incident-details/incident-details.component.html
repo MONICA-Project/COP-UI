@@ -1,0 +1,55 @@
+<div *ngIf="incident">
+    <div class="header">
+      <h4 class="title"> INCIDENT: {{incident?.type}}</h4>
+      <p class="category">{{incident?.description}}</p>
+    </div>
+    <div class="content table-responsive table-full-width">
+      
+      <table class="table table-hover">
+        <tbody>
+          <tr>
+            <td>Id</td>
+            <td>{{incident?.incidentid}}</td>
+          </tr>
+          <tr>
+            <td>Type</td>
+            <td>{{incident?.type}}</td>
+          </tr>
+          <tr>
+            <td>Time</td>
+            <td>{{incident?.incidenttime}}</td>
+          </tr>
+          <tr>
+            <td>Prio</td>
+            <td>{{incident?.prio}}</td>
+          </tr>
+          <tr>
+            <td>Probability</td>
+            <td>{{incident?.probability}}</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>{{incident?.status}}</td>
+          </tr>
+          <!-- <tr>
+            <td>Intervention Plan</td>
+            <td>{{incident?.interventionplan}}</td>
+          </tr> -->
+        </tbody>
+      </table>
+      <div style="margin:10px; text-align: right;">
+          <button class="btn btn-xs pull-left" (click)="dismissIncident(incident)">
+              <i class="ti-close"></i> Dismiss
+          </button>
+        <button class="btn btn-xs btn-fill" (click)="resolveIncident(incident)">
+            <i class="ti-check"></i> Resolve
+        </button>
+      </div>
+      <div>
+          <ngui-map center="40.565549,22.995280" zoom="15" [fullscreenControl]="true" [scrollwheel]="false">
+            <marker *ngFor="let m of incident.circles" [title]="m.title" [position]="m.pos"></marker>
+            <circle *ngFor="let c of incident.circles" [center]="c.pos" [strokeColor]="'#f28019'" [strokeOpacity]="0.8" [strokeWeight]="2" [radius]="c.radius"></circle>
+          </ngui-map>
+      </div>
+    </div>
+  </div>

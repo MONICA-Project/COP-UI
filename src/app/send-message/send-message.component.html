@@ -1,0 +1,15 @@
+<div>
+  <small class="pull-right">Max. 100 chars</small>
+  <input class="form-control" type="text" maxlength="100" [(ngModel)]="message" style="border: thin solid #dddddd">
+  <div style="margin:6px;">
+    <button class="btn btn-xs btn-fill" (click)="sendMessage()">Send</button>
+  </div>
+</div>
+<div class="alert alert-info" *ngIf="sentSuccess">
+  <button aria-hidden="true" class="close" type="button" (click)="clearMessage()">×</button>
+  <span><b>SENT</b><br>{{sentSuccess}}</span>
+</div>
+<div class="alert alert-warning" *ngIf="sentError">
+  <button aria-hidden="true" class="close" type="button" (click)="clearErrorMessage()">×</button>
+  <span><b>NOT SENT</b><br>{{sentError}}</span>
+</div>

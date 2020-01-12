@@ -1,0 +1,13 @@
+<!-- <div class="row" style="margin: 0 auto;">
+    <div *ngFor="let p of point_overview">
+    <div class="col-md-2 point" [ngClass]="p.color">
+      <h5 style="text-transform: uppercase;"><b>{{p.name}}</b></h5>
+      <p>{{p.text1}}</p>
+      <p>{{p.text2}}</p>
+    </div>
+  </div>
+  </div> -->
+  
+<div *ngFor="let s of neighbours">
+    <neighbour-charts [obj]="s"></neighbour-charts>
+</div>

@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <div>
+        <ngui-map zoom="13" center="50.709887, 7.141131" scrollwheel="false" style="height:600px">
+            <div id="floating-panel">
+                <button (click)="toggleHeatmap()">Toggle Heatmap</button>
+                <button (click)="changeGradient()">Change gradient</button>
+                <button (click)="changeRadius()">Change radius</button>
+                <button (click)="changeOpacity()">Change opacity</button>
+            </div>
+            <heatmap-layer [data]="points"></heatmap-layer>
+        </ngui-map>
+        <button (click)="loadRandomPoints()">Load Random Points</button>
+        <br/>
+        <button (click)="addPoint()">Add Point</button>
+    </div>
+    <!-- <map-cop [id]="'maps'" [pre_selected_filters]="selFilters"></map-cop> -->
+</div>

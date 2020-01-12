@@ -1,0 +1,52 @@
+<div [hidden]="isReady">
+  <img [src]="loaderUrl" />
+</div>
+<!-- [hidden]="!hasData" -->
+<div class="row">
+  <div class="col-md-12">
+    <!-- Single button -->
+    <!-- <div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Compare to
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li *ngFor="let m of soundmeters">
+          <a (click)="selectMeterToCompare(m)">{{m.name}}
+            <i class="ti-check" *ngIf="selectedMeterToCompare == m.id"></i>
+            <br>
+            <small class="xs-small">{{m.description}}</small>
+          </a>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li>
+          <a (click)="noSelection()">None</a>
+        </li>
+      </ul>
+    </div> -->
+  </div>
+  <!-- Spectra -->
+  <div class="col-md-8">
+    <div>
+      <chart (load)="saveInstance($event.context)" [options]="options"></chart>
+    </div>
+
+  </div>
+
+  <!-- LAeq, LCeq -->
+  <div class="col-md-4">
+    <div>
+      <chart (load)="saveInstance2($event.context)" [options]="options2"></chart>
+    </div>
+    <div class="pull-right" *ngIf="avg5min" style="margin-bottom: 10px;">
+      <span class="label label-default" title="LAeq 5 min avg: {{avg5min?.startTime | date : 'short'}} - {{avg5min?.endTime | date : 'short'}}">
+        LAeq avg: {{avg5min?.values[0] | number : '1.0-1'}} db</span>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <!-- Slider -->
+    <ion-range-slider #sliderElement type="single" min="0" max="100" grid="true" step="1" [from]="soundLevelLimit" prefix="Sound Level Limit: "
+      postfix=" db" (onFinish)="soundLimitFinish($event)"></ion-range-slider>
+  </div>
+
+</div>

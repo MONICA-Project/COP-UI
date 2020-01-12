@@ -1,0 +1,96 @@
+<div class="container-fluid">
+  <div class="col-md-12">
+    <a class="btn btn-primary btn-sm pull-left" [routerLink]="['/sound']">
+      <span class="ti-arrow-left"></span> Back to sound dashboard</a>
+      <br>
+    <h1>{{meter?.description}} ({{meter?.id}})</h1>
+  </div>
+  <!-- MAP -->
+  <div class="margin-component col-md-7">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Location</h4>
+        <!-- <p class="category">Exact location of sound level meter</p> -->
+      </div>
+      <div class="content example-header">
+        <ngui-map id="map" [options]="event" (mapReady$)="onMapReady($event)" (mapClick)="onMapClick($event)" (idle)="onIdle($event)"
+          mapTypeId="ROADMAP">
+          <marker [position]="marker.position" *ngIf="marker.visible"></marker>
+        </ngui-map>
+      </div>
+    </div>
+  </div>
+  <!-- DETAILS -->
+  <div class="margin-component col-md-5">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Details</h4>
+        <!-- <p class="category">Name, description etc.</p> -->
+      </div>
+      <div class="content example-header">
+        <div class="content table-responsive table-full-width">
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <td>Id</td>
+                <td>{{meter?.id}}</td>
+              </tr>
+              <tr>
+                <td>Type</td>
+                <td>{{meter?.thingTemplate}}</td>
+              </tr>
+              <tr>
+                <td>Name</td>
+                <td>{{meter?.name}}</td>
+              </tr>
+              <tr>
+                <td>Description</td>
+                <td>{{meter?.description}}</td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td>{{meter?.status}}</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 1/3 OCTAVE SPECTRA CHART-->
+  <div class="margin-component col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">1/3 OCTAVE SPECTRA</h4>
+        <!-- <p class="category">Name, description etc.</p> -->
+      </div>
+      <div class="content example-header">
+        <octave-spectra [id]="id"></octave-spectra>
+      </div>
+    </div>
+  </div>
+  <!-- LXeq CHART -->
+  <div class="margin-component col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">LAeq, LCeq</h4>
+        <!-- <p class="category">Name, description etc.</p> -->
+      </div>
+      <div class="content example-header">
+        <lxeq-chart [id]="id" [slider]="true"></lxeq-chart>
+      </div>
+    </div>
+  </div>
+  <!-- ANNOYANCE INDEX -->
+  <!-- <div class="margin-component col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Annoyance index</h4>
+      </div>
+      <div class="content example-header">
+        <annoyance-index-chart [id]="id"></annoyance-index-chart>
+      </div>
+    </div>
+  </div> -->
+</div>

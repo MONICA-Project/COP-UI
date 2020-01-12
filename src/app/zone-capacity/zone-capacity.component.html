@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="header">
+    <h4 class="title">Zone Capacity</h4>
+    <p class="category">All zones with active people count</p>
+  </div>
+  <div class="content example-header">
+    <!-- <button (click)="test()">Test</button> -->
+    <div class="zone-container">
+      <!-- ZONES -->
+      <div *ngFor="let z of zones">
+        <div *ngIf="showProgressBar(z)">
+          <p class="zonetitle">{{z?.name}} ({{z?.peoplecount | number}} visitors)</p>
+          <p class="timestamp">{{z?.timestamp | date: 'medium'}}</p>
+          <div class="progress">
+            <div class="progress-bar" [ngClass]="getProgressBarColor(z?.fill)" role="progressbar" [attr.aria-valuenow]="z?.fill" aria-valuemin="0"
+              aria-valuemax="100" [style.width]="z?.fill + '%'" style="min-width: 2em;">
+              {{z?.fill}}%
+            </div>
+          </div>
+          <p class="max-title">Max: {{z?.capacity | number}} visitors</p>
+        </div>
+      </div>
+      <!-- TOTAL ZONE -->
+      <div>
+        <hr>
+        <p class="title">
+          <b>Total ({{totalZone?.peoplecount | number}} visitors)</b>
+        </p>
+        <p class="timestamp">{{totalZone?.timestamp | date: 'medium'}}</p>
+        <div class="progress">
+          <div class="progress-bar" [ngClass]="getProgressBarColor(totalZone?.fill)" role="progressbar" aria-valuenow="totalZone?.fill" aria-valuemin="0"
+            aria-valuemax="100" [style.width]="totalZone?.fill + '%'" style="min-width: 2em;">
+            {{totalZone?.fill}}%
+          </div>
+        </div>
+        <p class="max-title">Max: {{totalZone?.capacity | number}} visitors</p>
+      </div>
+    </div>
+  </div>
+</div>

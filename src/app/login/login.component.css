@@ -1,0 +1,57 @@
+
+.bg {
+    /* The image used */
+    /* background-image: url("https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=fb2264421ec008a297430e9e25f94eb3&auto=format&fit=crop&w=2850&q=80"); */
+    background-image: url("https://images.unsplash.com/photo-1514286969571-5142af56b991?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=12f250139fca2206e67f482d44afe14a&auto=format&fit=crop&w=1500&q=80");
+    /* background-image: url("https://images.unsplash.com/photo-1486556396467-d83d2b23514b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=dc2534e040ec64bde3a111a9fc76a7dc&auto=format&fit=crop&w=1350&q=80"); */
+    
+    /* opacity: 0.8;
+    filter: alpha(opacity=80); */
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+a {
+    color: #FFFFFF;
+}
+
+.forgot a{
+    color:#9A9A9A;
+}
+
+.card {
+    padding:35px;
+    /* opacity: 0.96; */
+}
+
+.card-content{
+    margin-top:20px;
+}
+
+.logo{
+    margin: 0 auto;
+    display: block;
+    
+}
+
+.form-control {
+    background-color: #e6e4e4;
+    border: medium none;
+    border-radius: 4px;
+    color: #66615b;
+    font-size: 14px;
+    transition: background-color 0.3s ease 0s;
+    padding: 7px 18px;
+    height: 40px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.required{
+    color: rgb(146, 5, 5);
+}

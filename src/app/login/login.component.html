@@ -1,0 +1,53 @@
+<div class="bg">
+    <nav class="navbar navbar-transparent navbar-absolute">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-target="#navigation-example-2" data-toggle="collapse" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" [routerLink]="'/'">MONICA COP</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a ruterlinkactive="active" href="https://www.monica-project.eu/" target="_blank">
+                            About the project
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
+        <div class="card">
+            <div class="xheader">
+                <img [src]="logoUrl" alt="" class="logo">
+            </div>
+            <div class="card-content">
+                <form #f="ngForm" (ngSubmit)="login(f)" novalidate>
+                    <div class="form-group" [ngClass]="{'has-error':email.touched && email.invalid}">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" #email="ngModel" id="email" name="email" required="required" [(ngModel)]="user.email">
+                        <div *ngIf="email.touched && email.invalid">
+                            <p class="required" *ngIf="email.errors.required">* Please enter a valid email address</p>
+                        </div>
+                    </div>
+                    <div class="form-group" [ngClass]="{'has-error':password.touched && password.invalid}">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" #password="ngModel" id="password" name="password" required="required" [(ngModel)]="user.password">
+                        <div *ngIf="password.touched && password.invalid">
+                            <p class="required" *ngIf="password.errors.required">* Please enter a valid password</p>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger" role="alert" *ngIf="user.signedIn===false">
+                        <a href="#" class="alert-link">Invalid email or password </a>
+                    </div>
+                    <button type="submit" class="btn btn-default pull-right">Login</button>
+                    <br>
+                </form>
+            </div>
+        </div>
+    </div>

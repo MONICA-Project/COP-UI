@@ -1,0 +1,19 @@
+.zone-container{
+    margin:20px;
+}
+.zonetitle {
+    font-size: 120%;
+    margin-bottom: 5px;
+}
+.max-title{
+    text-align:right;
+    font-size: 90%;
+}
+.progress {
+    margin-bottom: 2px;
+}
+.timestamp{
+    color: #a9a9a9;
+    text-align: left;
+    font-size: 80%;
+}

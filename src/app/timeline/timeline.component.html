@@ -1,0 +1,90 @@
+<div class="col-md-12">
+    <img [src]="imgUrl" style="width:100%; max-height:300px;">
+    <button class="btn btn-default" (click)="reloadImg()">reload image</button>
+</div>
+<div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Progress bars</h4>
+        <p class="category">From paper-kit theme</p>
+      </div>
+      <div class="content">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
+            <span class="sr-only">60% Complete</span>
+          </div>
+        </div>
+
+        <div class="progress">
+          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+            <span class="sr-only">60% Complete</span>
+          </div>
+        </div>
+
+        <div class="progress">
+          <div class="progress-bar progress-bar-success" style="width: 35%">
+            <span class="sr-only">35% Complete (success)</span>
+          </div>
+
+          <div class="progress-bar progress-bar-warning" style="width: 20%">
+            <span class="sr-only">20% Complete (warning)</span>
+          </div>
+
+          <div class="progress-bar progress-bar-danger" style="width: 10%">
+            <span class="sr-only">10% Complete (danger)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Timeline</h4>
+        <p class="category">Created by me testing </p>
+      </div>
+      <div class="content timeline-bkg">
+        <ul class="timeline">
+
+          <!-- Item 1 -->
+          <li>
+            <div class="direction-r">
+              <div class="flag-wrapper">
+                <span class="flag">Freelancer</span>
+                <span class="time-wrapper">
+                  <span class="time">2013 - present</span>
+                </span>
+              </div>
+              <div class="desc">My current employment. Way better than the position before!</div>
+            </div>
+          </li>
+
+          <!-- Item 2 -->
+          <li>
+            <div class="direction-l">
+              <div class="flag-wrapper">
+                <span class="flag">Apple Inc.</span>
+                <span class="time-wrapper">
+                  <span class="time">2011 - 2013</span>
+                </span>
+              </div>
+              <div class="desc">My first employer. All the stuff I've learned and projects I've been working on.</div>
+            </div>
+          </li>
+
+          <!-- Item 3 -->
+          <li>
+            <div class="direction-r">
+              <div class="flag-wrapper">
+                <span class="flag">Harvard University</span>
+                <span class="time-wrapper">
+                  <span class="time">2008 - 2011</span>
+                </span>
+              </div>
+              <div class="desc">A description of all the lectures and courses I have taken and my final degree?</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>

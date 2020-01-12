@@ -1,0 +1,113 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.margin-component {
+    margin-top: 25px;
+}
+
+mwl-gauge {
+    // width: 150px;
+    // height: 150px;
+    display: block;
+    padding: 10px;
+  }
+  mwl-gauge > .gauge > .dial {
+    stroke: #eee;
+    stroke-width: 2;
+    fill: rgba(0,0,0,0);
+  }
+  mwl-gauge > .gauge > .value {
+    stroke: rgb(47, 227, 255);
+    stroke-width: 2;
+    fill: rgba(0,0,0,0);
+  }
+  mwl-gauge > .gauge > .value-text {
+    fill: rgb(47, 227, 255);
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 1em;
+  }
+
+  /* ------- Gauge green ------- */
+  mwl-gauge.green {
+}
+mwl-gauge.green > .gauge > .dial {
+stroke: #444444;
+stroke-width: 10;
+}
+mwl-gauge.green > .gauge > .value {
+stroke: #5cb85c;
+stroke-dasharray: none;
+stroke-width: 13;
+}
+mwl-gauge.green > .gauge > .value-text {
+fill: #5cb85c;
+}
+
+/* ------- Gauge yellow ------- */
+mwl-gauge.yellow {
+}
+mwl-gauge.yellow > .gauge > .dial {
+stroke: #444444;
+stroke-width: 10;
+}
+mwl-gauge.yellow > .gauge > .value {
+stroke: rgb(230, 230, 0);
+stroke-dasharray: none;
+stroke-width: 13;
+}
+mwl-gauge.yellow > .gauge > .value-text {
+fill: rgb(230, 230, 0);
+}
+
+  /* ------- Gauge orange ------- */
+  mwl-gauge.orange {
+    }
+    mwl-gauge.orange > .gauge > .dial {
+    stroke: #444444;
+    stroke-width: 10;
+    }
+    mwl-gauge.orange > .gauge > .value {
+    stroke: orange;
+    stroke-dasharray: none;
+    stroke-width: 13;
+    }
+    mwl-gauge.orange > .gauge > .value-text {
+    fill: orange;
+    }
+
+    /* ------- Gauge red ------- */
+  mwl-gauge.red {
+}
+mwl-gauge.red > .gauge > .dial {
+stroke: #444444;
+stroke-width: 10;
+}
+mwl-gauge.red > .gauge > .value {
+stroke: #DD0330;
+stroke-dasharray: none;
+stroke-width: 13;
+}
+mwl-gauge.red > .gauge > .value-text {
+fill: #DD0330;
+}
+
+/* ------- Gauge dark-red ------- */
+mwl-gauge.darkred {
+}
+mwl-gauge.darkred > .gauge > .dial {
+stroke: #444444;
+stroke-width: 10;
+}
+mwl-gauge.darkred > .gauge > .value {
+stroke: darkred;
+stroke-dasharray: none;
+stroke-width: 13;
+}
+mwl-gauge.darkred > .gauge > .value-text {
+fill: darkred;
+}

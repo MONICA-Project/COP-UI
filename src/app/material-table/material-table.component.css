@@ -1,0 +1,42 @@
+.example-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+  }
+  
+  .example-header {
+    min-height: 64px;
+    padding: 8px 24px 0;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .mat-table {
+    overflow: auto;
+    /* max-height: 500px; */
+  }
+
+  /* .mat-column-active, .mat-column-email {
+    max-width: 124px;
+  } */
+
+  .mat-column-role {
+    min-width: 40%;
+  }
+
+  .mat-column-fullName {
+    min-width: 50%;
+  }
+
+  .status-label{
+    cursor: pointer;
+  }
+
+  
+  /* .mat-column-active {
+    display: flex;
+    justify-content: flex-end;
+    } */

@@ -1,0 +1,649 @@
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12" [ngClass]="getMapClass()">
+    <div class="xcard">
+      <div class="xcontent">
+        <div *ngIf="loadingSoundHeatMap">Loading...</div>
+        <!-- <button class="btn btn-primary" (click)="setupSoundPath()">TEST {{soundPaths.length}}</button> -->
+        
+        <!-- Sound heat map selects -->
+        <div class="row" *ngIf="soundHeatMaps?.length > 0 && soundHeatMaps[0].visible">
+            <button class="btn btn-sm pull-right" (click)="setupSoundHeatMaps()"><span class="ti-reload"></span></button>
+          <div class="col-md-4">
+            <h6>select Frequency weight</h6>
+            <select (change)="onChangeWeightSoundHeatMap($event.target.value)" style="width:100%">
+              <option *ngFor="let object of frequencyWeights" [ngValue]="object" [selected]="object?.viewValue == selectedFrequencyWeight">{{object?.viewValue}}</option>
+            </select>
+          </div>
+        
+          <div class="col-md-4">
+            <h6>select Frequency</h6>
+            <select (change)="onChangeSoundHeatMap($event.target.value)" style="width:100%">
+              <option *ngFor="let object of bandFrequenciesObjects" [ngValue]="object" [selected]="object?.viewValue == selectedFrequency">{{object?.viewValue}}</option>
+            </select>
+          </div>
+          <div class="col-md-12">
+            <small>{{heatmapTimestamp | date:'medium'}}</small>
+          </div>
+        </div>
+
+        <!-- SELECTED FILTER TAGS -->
+        <div class="filter-tags">
+          <span *ngFor="let filter of filters.incidents">
+            <span class="label label-default point-it" (click)="selectFilter(filter)" *ngIf="filter.selected">{{filter.name}}
+              <span aria-hidden="true">&times;</span>
+            </span>
+          </span>
+          <span *ngFor="let filter of filters.staff">
+            <span class="label label-default point-it" (click)="selectFilter(filter)" *ngIf="filter.selected">{{filter.name}}
+              <span aria-hidden="true">&times;</span>
+            </span>
+          </span>
+          <span *ngFor="let filter of filters.sound">
+            <span class="label label-default point-it" (click)="selectFilter(filter)" *ngIf="filter.selected">{{filter.name}}
+              <span aria-hidden="true">&times;</span>
+            </span>
+          </span>
+          <span *ngFor="let filter of filters.crowd">
+            <span class="label label-default point-it" (click)="selectFilter(filter)" *ngIf="filter.selected">{{filter.name}}
+              <span aria-hidden="true">&times;</span>
+            </span>
+          </span>
+          <span *ngFor="let filter of filters.event">
+            <span class="label label-default point-it" (click)="selectFilter(filter)" *ngIf="filter.selected">{{filter.name}}
+              <span aria-hidden="true">&times;</span>
+            </span>
+          </span>
+          <span *ngFor="let filter of filters.feedback">
+            <span class="label label-default point-it" (click)="selectFilter(filter)" *ngIf="filter.selected">{{filter.name}}
+              <span aria-hidden="true">&times;</span>
+            </span>
+          </span>
+        </div>
+
+        
+
+        <!-- MAP -->
+        <div class="card card-map">
+          <div class="map-container">
+            <ngui-map id="map" [options]="event" (mapReady$)="onMapReady($event)" (mapClick)="onMapClick($event)"
+              (idle)="onIdle($event)" mapTypeId="ROADMAP">
+              <!-- <heatmap-layer [data]="points"></heatmap-layer> -->
+              <!-- Red labels for zones -->
+              <marker *ngFor="let m of labelMarkers" [position]="m.pos" [label]="m.label" draggable="false" [visible]="m.visible"></marker>
+              <!-- Circle zones -->
+              <circle *ngFor="let c of circles" [center]="c.paths" [strokeColor]="c.color" [strokeOpacity]="0.8" [strokeWeight]="2"
+                [radius]="c.fill" [fillOpacity]="0.5" [fillColor]="c.color" (click)="onPolygonClick($event, c)" [visible]="c.visible"></circle>
+              <!-- Zones polygons -->
+              <polygon *ngFor="let zone of zones" [title]="'Event zones'" [editable]="false" [paths]="zone.paths" [visible]="zone.visible"
+              [strokeColor]="zone.color" [strokeOpacity]="0.8" [strokeWeight]="2" [fillColor]="zone.color" [fillOpacity]="0.35" draggable="false"
+              (click)="onPolygonClick($event, zone)"></polygon>
+              <!-- POIS + People positions -->
+              <marker *ngFor="let pos of positions" draggable="false" [title]="pos.type + ': ' + pos.name + ' ' + pos.timestamp" [position]="pos.position" [icon]="pos.icon" [visible]="pos.visible"
+                (initialized$)="onMarkerInit($event)" (click)="onMarkerClick($event, pos)"></marker>
+              <!-- Sound paths -->
+              <marker *ngFor="let pos of soundPaths" draggable="false" [title]="pos.id + ': ' + pos.timestamp" [position]="pos.position" [icon]="pos.icon" [visible]="pos.visible"
+              (initialized$)="onMarkerInit($event)" (click)="onMarkerClick($event, pos)"></marker>
+
+                <!-- Info window for position markers -->
+              <info-window id="iw" (closeclick)="closeInfoWindow($event)">
+                <div>
+                  <small>{{marker.name}}</small>
+                </div>
+                <!-- <div [innerHTML]="marker.html" style="color:red;"></div> -->
+              </info-window>
+              <div *ngFor="let sh of soundHeatMaps">
+                <!-- Sound heat map -->
+                <polygon *ngFor="let p of sh.points" [paths]="p.paths" [strokeColor]="p.color" [strokeOpacity]="0.6" [strokeWeight]="1" [fillColor]="p.color"
+                  [fillOpacity]="0.8" [visible]="sh.visible"></polygon>
+              </div>
+            </ngui-map>
+          </div>
+          <!-- Sound level colors -->
+          <div class="row" *ngIf="soundHeatMaps?.length > 0 && soundHeatMaps[0].visible">
+              <div class="col-md-1 color-indicator" *ngFor="let c of soundLevels" [style.background-color]="c.hex" [style.color]="c.text_color"
+                [title]="c.label">
+                {{c.label}}
+              </div>
+            </div>
+
+          <!-- Sound path level colors -->
+          <div class="row" *ngIf="soundPaths?.length > 0 && soundPaths[0].visible">
+              <div class="col-md-1 color-indicator" *ngFor="let c of soundPathLevels" [style.background-color]="c.hex" [style.color]="c.text_color"
+                [title]="c.label">
+                {{c.label}}
+              </div>
+            </div>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="row no-margin">
+          <div class="btn-group" role="group" aria-label="Map filters">
+            <!--ALERT-->
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Incidents
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let filter of filters.incidents">
+                  <a (click)="selectFilter(filter)">{{filter.name}}
+                    <i class="ti-check" *ngIf="filter.selected"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!--STAFF-->
+          <!--  <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Staff
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let filter of filters.staff">
+                  <a (click)="selectFilter(filter)">{{filter.name}}
+                    <i class="ti-check" *ngIf="filter.selected"></i>
+                  </a>
+                </li>
+              </ul>
+            </div> -->
+            <!--SOUND-->
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sound
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let filter of filters.sound">
+                  <a (click)="selectFilter(filter)">{{filter.name}}
+                    <i class="ti-check" *ngIf="filter.selected"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!--CROWD-->
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                Crowd
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let filter of filters.crowd">
+                  <a (click)="selectFilter(filter)">{{filter.name}}
+                    <i class="ti-check" *ngIf="filter.selected"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!--EVENT-->
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Event
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let filter of filters.event">
+                  <a (click)="selectFilter(filter)">{{filter.name}}
+                    <i class="ti-check" *ngIf="filter.selected"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!--FEEDBACK-->
+            <!-- <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Feedback
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let filter of filters.feedback">
+                  <a (click)="selectFilter(filter)">{{filter.name}}
+                    <i class="ti-check" *ngIf="filter.selected"></i>
+                  </a>
+                </li>
+              </ul>
+            </div> -->
+          </div>
+          <button class="btn pull-right btn-info btn-fill btn-wd" (click)="panToEventCenter()"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Center map</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 col-sm-12 col-xs-12" [ngClass]="getInfoClass()" *ngIf="hasSelected">
+    <div class="card">
+      <div class="header">
+        <div class="pull-right point-it" (click)="hideInfo()">
+          <span class="ti-close"></span>
+        </div>
+      </div>
+      <div class="content">
+        <!-- INCIDENT -->
+        <div *ngIf="incident">
+          <div class="header">
+            <h4 class="title"> INCIDENT: {{incident?.type}}</h4>
+            <p class="category">{{incident?.description}}</p>
+          </div>
+          <div class="content table-responsive table-full-width">
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <td>Id</td>
+                  <td>{{incident?.incidentid}}</td>
+                </tr>
+                <tr>
+                  <td>Type</td>
+                  <td>{{incident?.type}}</td>
+                </tr>
+                <tr>
+                  <td>Time</td>
+                  <td>{{incident?.incidenttime}}</td>
+                </tr>
+                <tr>
+                  <td>Prio</td>
+                  <td>{{incident?.prio}}</td>
+                </tr>
+                <tr>
+                  <td>Probability</td>
+                  <td>{{incident?.probability}}</td>
+                </tr>
+                <!-- <tr>
+                  <td>Intervention Plan</td>
+                  <td>{{incident?.interventionplan}}</td>
+                </tr> -->
+                <tr>
+                  <td>Status</td>
+                  <td>{{incident?.status}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="alert alert-info" *ngIf="incident.message">
+              <button aria-hidden="true" class="close" type="button">×</button>
+              <span>
+                <b> Updated </b> {{incident.message}}</span>
+            </div>
+            <div style="margin:10px; text-align: right;">
+              <button class="btn btn-xs pull-left" (click)="dismissIncident(incident)">
+                <i class="ti-close"></i> Dismiss
+              </button>
+              <button class="btn btn-xs btn-fill" (click)="resolveIncident(incident)">
+                <i class="ti-check"></i> Resolve
+              </button>
+            </div>
+            <!-- <div *ngIf="incident.circles.length > 0">
+              <ngui-map [center]="incident.circles[0].pos" zoom="15" [fullscreenControl]="true" [scrollwheel]="false">
+                <marker *ngFor="let m of incident.circles" [title]="m.title" [position]="m.pos"></marker>
+                <circle *ngFor="let c of incident.circles" [center]="c.pos" [strokeColor]="'#f28019'" [strokeOpacity]="0.8" [strokeWeight]="2"
+                  [radius]="c.radius"></circle>
+              </ngui-map>
+            </div> -->
+          </div>
+        </div>
+
+        <!-- PERSON DETAILS-->
+        <div *ngIf="person">
+          <div class="header">
+            <h4 class="title"> {{person?.fullName}}</h4>
+            <p class="category">{{person?.role}}</p>
+          </div>
+          <div class="content table-responsive table-full-width">
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <td>Id</td>
+                  <td>{{person?.id}}</td>
+                </tr>
+                <tr>
+                  <td>Name</td>
+                  <td>{{person?.fullName}}</td>
+                </tr>
+                <tr>
+                  <td>Phone</td>
+                  <td>{{person?.phone}}</td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>{{person?.email}}</td>
+                </tr>
+                <tr>
+                  <td>Active</td>
+                  <td>{{person?.active}}</td>
+                </tr>
+                <tr>
+                  <td>Send WB message</td>
+                  <td>
+                    <div>
+                      <small class="pull-right">Max. 100 chars</small>
+                      <input class="form-control" type="text" maxlength="100" [(ngModel)]="person.message" style="border: thin solid #dddddd">
+                      <div style="margin:6px;">
+                        <button class="btn btn-xs btn-fill" (click)="sendMessage()">Send</button>
+                      </div>
+                    </div>
+                    <div class="alert alert-info" *ngIf="person.sentSuccess">
+                      <button aria-hidden="true" class="close" type="button" (click)="clearMessage()">×</button>
+                      <span>
+                        <b> Sent </b> {{person.sentSuccess}}</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- THINGS DETAILS -->
+        <div *ngIf="thing">
+          <div class="header">
+            <h4 class="title"> {{thing?.name}}</h4>
+            <p class="category">{{thing?.thingTemplate}}</p>
+          </div>
+          <div *ngIf="historicChartOptions">
+            <hr>
+            <div >
+              <chart (load)="savehistoricChartInstance($event.context)" [options]="historicChartOptions"></chart>
+            </div>
+          </div>
+          <div class="content table-responsive table-full-width">
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <td>Id</td>
+                  <td>{{thing?.id}}</td>
+                </tr>
+                <tr>
+                  <td>Name</td>
+                  <td>{{thing?.name}}</td>
+                </tr>
+                <tr>
+                  <td>Description</td>
+                  <td>{{thing?.description}}</td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>{{thing?.status}}</td>
+                </tr>
+                <tr *ngIf="thing?.value">
+                  <td>Value</td>
+                  <td title="{{ thing?.timestamp | date: 'medium' }}">
+                    <span class="label label-default">
+                      {{thing?.value | number : '1.0-2'}}{{thing.unit}}
+                    </span>
+                  </td>
+                </tr>
+                <!-- <tr *ngIf="thing?.thingTemplate=='Camera'">
+                  <td>Count</td>
+                  <td>{{thing?.count}}</td>
+                </tr>
+                <tr *ngIf="thing?.thingTemplate=='Camera'">
+                  <td>Timestamp</td>
+                  <td>{{thing?.timestamp | date: 'medium'}}</td>
+                </tr> -->
+                <!-- <tr>
+                              <td>Position</td>
+                              <td>{{thing?.lat}},{{thing?.lon}}</td>
+                            </tr> -->
+                
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+
+        <!-- SOUND PATH DETAILS -->
+        <div *ngIf="soundPath">
+          <div class="header">
+            <h4 class="title">Sound Path {{soundPath?.obj?.leq_id}}</h4>
+            <!-- <p class="category">{{soundPath?.thingTemplate}}</p> -->
+          </div>
+          <div class="content table-responsive table-full-width">
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <td>Id</td>
+                  <td>{{soundPath?.obj?.leq_id}}</td>
+                </tr>
+                
+                <tr>
+                    <th>color</th>
+                    <td><div [style.background-color]="soundPath?.obj['marker-color']" style="width:100%; height:30px;"></div></td>
+                </tr>
+                <tr>
+                    <th>accuracy</th>
+                    <td>{{soundPath?.obj?.accuracy}}</td>
+                </tr>
+                <tr>
+                    <th>location_utc</th>
+                    <td>{{soundPath?.obj?.location_utc | date: 'medium'}}</td>
+                </tr>
+                <tr>
+                    <th>leq_utc</th>
+                    <td>{{soundPath?.obj?.leq_utc | date: 'medium'}}</td>
+                </tr>
+                <tr>
+                    <th>leq_mean</th>
+                    <td>{{soundPath?.obj?.leq_mean}} dB</td>
+                </tr>
+                <tr>
+                    <th>leq_100</th>
+                    <td>{{soundPath?.obj?.leq_100}} dB</td>
+                </tr>
+                <tr>
+                    <th>leq_125</th>
+                    <td>{{soundPath?.obj?.leq_125}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_160</th>
+                    <td>{{soundPath?.obj?.leq_160}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_200</th>
+                    <td>{{soundPath?.obj?.leq_200}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_250</th>
+                    <td>{{soundPath?.obj?.leq_250}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_315</th>
+                    <td>{{soundPath?.obj?.leq_315}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_400</th>
+                    <td>{{soundPath?.obj?.leq_400}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_500</th>
+                    <td>{{soundPath?.obj?.leq_500}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_630</th>
+                    <td>{{soundPath?.obj?.leq_630}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_800</th>
+                    <td>{{soundPath?.obj?.leq_800}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_1000</th>
+                    <td>{{soundPath?.obj?.leq_1000}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_1250</th>
+                    <td>{{soundPath?.obj?.leq_1250}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_1600</th>
+                    <td>{{soundPath?.obj?.leq_1600}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_2000</th>
+                    <td>{{soundPath?.obj?.leq_2000}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_2500</th>
+                    <td>{{soundPath?.obj?.leq_2500}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_3150</th>
+                    <td>{{soundPath?.obj?.leq_3150}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_4000</th>
+                    <td>{{soundPath?.obj?.leq_4000}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_5000</th>
+                    <td>{{soundPath?.obj?.leq_5000}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_6300</th>
+                    <td>{{soundPath?.obj?.leq_6300}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_8000</th>
+                    <td>{{soundPath?.obj?.leq_8000}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_10000</th>
+                    <td>{{soundPath?.obj?.leq_10000}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_12500</th>
+                    <td>{{soundPath?.obj?.leq_12500}}  dB</td>
+                </tr>
+                <tr>
+                    <th>leq_16000</th>
+                    <td>{{soundPath?.obj?.leq_16000}}  dB</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ZONE DETAILS -->
+        <div *ngIf="zone">
+          <div class="header">
+            <h4 class="title"> {{zone?.name}}</h4>
+            <p class="category">{{zone?.type}}</p>
+          </div>
+          <div class="content table-responsive table-full-width">
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <td>Id</td>
+                  <td>{{zone?.id}}</td>
+                </tr>
+                <tr>
+                  <td>Description</td>
+                  <td>{{zone?.description}}</td>
+                </tr>
+                <tr *ngIf="zone.peoplecount != null">
+                  <td>Count</td>
+                  <td>{{zone?.peoplecount}}</td>
+                </tr>
+                <tr *ngIf="zone.peoplecount != null">
+                  <td>Capacity</td>
+                  <td>{{zone?.capacity}}</td>
+                </tr>
+                <tr *ngIf="zone.peoplecount != null">
+                  <td>Filled</td>
+                  <td>
+                    <div class="progress">
+                      <div class="progress-bar" [ngClass]="getProgressBarColor(zone?.fill)" role="progressbar" [attr.aria-valuenow]="zone?.fill"
+                        aria-valuemin="0" aria-valuemax="100" [style.width]="zone?.fill + '%'" style="min-width: 2em;">
+                        {{zone?.fill}}%
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <!-- <tr>
+                  <td>Position</td>
+                  <td>
+                    <small>{{zone?.boundingPolygon[0][0]}}</small>
+                    <br>
+                    <small>{{zone?.boundingPolygon[0][1]}}</small>
+                  </td>
+                </tr> -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SOUND DETAILS -->
+        <!-- <div *ngIf="soundmeter">
+            <div class="header">
+                <h4 class="title"> {{soundmeter?.name}}</h4>
+                <p class="category">{{soundmeter?.type}}</p>
+              </div>
+              <div class="content table-responsive table-full-width">
+                <table class="table table-hover">
+                  <tbody>
+                    <tr>
+                      <td>Id</td>
+                      <td>{{soundmeter?.id}}</td>
+                    </tr>
+                    <tr>
+                      <td>Description</td>
+                      <td>{{soundmeter?.description}}</td>
+                    </tr>
+                    <tr>
+                      <td>Value</td>
+                      <td>wsgr</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+        </div> -->
+
+        <!-- SOUND HEAT MAP DETAILS -->
+        <div *ngIf="soundHeatMap">
+          <div class="header">
+            <h4 class="title">Sound Heat Map 1</h4>
+            <p class="category">Sound Heat Map</p>
+          </div>
+          <div class="content table-responsive table-full-width">
+            <button class="btn btn-xs btn-fill pull-right" (click)="reloadSoundHeatMap()">
+              <i class="ti-reload"></i>
+            </button>
+            <img [src]="soundHeatMap.url" style="width:100%; max-height:300px; padding-top:10px;">
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <td>
+                    <div style="width:20px; height:20px; background: red;"></div>
+                  </td>
+                  <td>120 dB</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="width:20px; height:20px; background: white; border: thin solid #c0c0c0;"></div>
+                  </td>
+                  <td> > 30 dB</td>
+                </tr>
+                <tr>
+                  <td>Latitude Start</td>
+                  <td>{{soundHeatMap?.latStart}}</td>
+                </tr>
+                <tr>
+                  <td>Longitude End</td>
+                  <td>{{soundHeatMap?.lonStart}}</td>
+                </tr>
+                <tr>
+                  <td>Latitude Start</td>
+                  <td>{{soundHeatMap?.latEnd}}</td>
+                </tr>
+                <tr>
+                  <td>Longitude End</td>
+                  <td>{{soundHeatMap?.lonEnd}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <ngui-map [center]="soundHeatMap.markers[0].pos" zoom="12" [fullscreenControl]="true" [scrollwheel]="false">
+                <marker *ngFor="let m of soundHeatMap.markers" [title]="m.title" [position]="m.pos"></marker>
+              </ngui-map>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="row" style="margin-top:25px;">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <button class="btn pull-right btn-primary" (click)="downloadData()">
+          <span class="ti-download"></span> Download data</button>
+        <h4 class="title">Sound levels in resting area ({{valsA?.SLM}})</h4>
+        <p class="category">Maximum allowable values are in accordance with French regulation</p>
+
+      </div>
+      <div class="content example-header">
+        <div class="row">
+          <div class="col-md-9">
+            <div>
+              <div class="row" style="border:thin solid #c0c0c0; margin:10px; padding:10px; border-radius: 5px;">
+                <div class="col-md-9">
+                  <!-- dBA chart -->
+                  <chart (load)="saveInstance($event.context)" [options]="options"></chart>
+                </div>
+                <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #c0c0c0; padding-top:5px;">
+                  <h6 style="margin-bottom:5px;">15 MINUTES AVERAGE</h6>
+                  <div style="color: #68B3C8; font-size:large">
+                    {{valsA?.laeq_level | number : '1.0-1'}} dBA
+                  </div>
+                  <small>{{valsA?.timestamp | date:'medium'}}</small>
+                </div>
+                <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #DD0330; padding-top:5px;">
+                  <h6 style="margin-bottom:5px;">Maximum allowable for 8 hours exposure</h6>
+                  <div style="color: #DD0330; font-size:large">{{valsA?.laeq_limit}} dBA (current)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div style="border:thin solid #029E6F; margin:10px; padding:5px; border-radius: 5px;" class="text-center">
+              <h5 >Remaining exposure time</h5>
+              <p style="color:#029E6F;"><b>Approx. {{valsA?.exposure_remaining | number : '1.0-1'}} hours</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

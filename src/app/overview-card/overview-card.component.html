@@ -1,0 +1,30 @@
+<div class="card" [ngClass]="{'disabled':!values.enabled}">
+  <div class="content">
+      <div class="row">
+          <div class="col-xs-5">
+              <div class="icon-big text-center" [ngClass]="values.icon_color">
+                  <i [ngClass]="values.icon"></i>
+              </div>
+          </div>
+          <div class="col-xs-7">
+              <div class="numbers">
+                <div *ngIf="values.value">
+                  <p>{{values.title}}</p>
+                  {{values.value | number}}
+                </div>
+
+                <div *ngIf="values.value_str">
+                    <p>{{values.title}}</p>
+                    {{values.value_str}}
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="footer">
+          <hr />
+          <div class="stats">
+              <i [ngClass]="values.small_icon"></i> {{values.time}}
+          </div>
+      </div>
+  </div>
+</div>

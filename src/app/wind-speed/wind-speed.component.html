@@ -1,0 +1,24 @@
+<div class="card">
+  <div class="header">
+    <h4 class="title">{{values.name}} 
+      <!-- <button class="btn btn-sm" (click)="randomVal()">Test {{val}}</button><br> -->
+    </h4>
+    <p class="category">{{valText}}
+      <br>
+       <span class="pull-right">{{values?.timestamp | date: 'medium'}}</span></p>
+       <br>
+  </div>
+  <div class="content example-header" style="max-height:320px;">
+      <div class="pull-left">
+        <!-- <span class="label label-warning" title="Wind speed limit">
+          Limit: {{values.limit}}</span> -->
+      </div>
+      <div class="pull-right">
+          <span class="label label-default" title="Wind speed in m/s">
+            {{values.value | number : '1.0-2'}} m/s</span>
+        </div>
+    <mwl-gauge [class]="bftClass" [max]="12" [dialStartAngle]="180" 
+      [dialEndAngle]="0" [value]="bftVal" [label]="valueWithUnit" [animated]="true" [animationDuration]="2">
+    </mwl-gauge>
+  </div>
+</div>

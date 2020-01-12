@@ -1,0 +1,58 @@
+.map-container {
+    position: relative;
+    padding-bottom: 50%;
+    overflow: hidden;
+}
+
+.map-container ngui-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.dropdown-menu li {
+    cursor: pointer;
+}
+
+.filter-tags{
+    margin:5px; text-align: right; 
+}
+
+.point-it{
+    cursor:pointer;
+    margin:1px;
+}
+
+.no-margin{
+    margin: 0px;
+}
+chart {
+    width: 100% !important;
+   /* height:100% !important; */
+    margin: 0 auto;
+    display: block;
+    /* padding: 25px; */
+}
+
+.progress {
+    margin-bottom: 0px;
+}
+.color-indicator{
+    height:50px; text-align:center; padding:5px;
+}
+@media only screen and (max-width: 600px) {
+    .btn{
+        width: 100%;
+    }
+    .color-indicator{
+        height:15px; text-align:center; padding:2px;
+        font-size: 9px;
+    }
+}

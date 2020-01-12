@@ -1,0 +1,12 @@
+<div>
+  <chart (load)="saveInstance2($event.context)" [options]="options2"></chart>
+</div>
+<div class="pull-right" *ngIf="avg5min" style="margin-bottom: 10px;">
+  <span class="label label-default" title="LAeq 5 min avg: {{avg5min?.startTime | date : 'short'}} - {{avg5min?.endTime | date : 'short'}}">
+    LAeq avg: {{avg5min?.values[0] | number : '1.0-1'}} db</span>
+</div>
+<div style="padding:0px 20px;" *ngIf="slider">
+  <!-- Slider -->
+  <ion-range-slider #sliderElement type="single" min="0" max="100" grid="true" step="1" [from]="soundLevelLimit" prefix="Sound Level Limit: "
+    postfix=" db" (onFinish)="soundLimitFinish($event)"></ion-range-slider>
+</div>

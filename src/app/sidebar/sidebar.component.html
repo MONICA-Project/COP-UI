@@ -1,0 +1,57 @@
+<style>
+    .test{
+        border-top: 1px solid rgba(102, 97, 91, 0.3);
+        border-bottom: 1px solid rgba(102, 97, 91, 0.3);
+    }
+</style>
+<div class="sidebar-wrapper">
+    <div class="logo">
+        <span class="simple-text">
+            <!-- <div class="logo-img">
+                <img src="../../assets/img/monica-logo.png" alt="">
+            </div> -->
+            {{event?.name}}
+            <!-- Fête des Lumières -->
+        </span>
+        
+    </div>
+    <div>
+        <small style="text-align: center; display:block; margin-top:15px;">Admin</small>
+    </div>
+    <ul class="nav">
+            <!-- <li *ngIf="isNotMobileMenu()">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="ti-panel"></i>
+					<p>Stats</p>
+                </a>
+            </li>
+            <li class="dropdown" *ngIf="isNotMobileMenu()">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="ti-bell"></i>
+                        <p class="notification">5</p>
+    					<p>Notifications</p>
+    					<b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Notification 1</a></li>
+                    <li><a href="#">Notification 2</a></li>
+                    <li><a href="#">Notification 3</a></li>
+                    <li><a href="#">Notification 4</a></li>
+                    <li><a href="#">Another notification</a></li>
+                  </ul>
+            </li>
+            <li *ngIf="isNotMobileMenu()">
+                <a href="#">
+					<i class="ti-settings"></i>
+					<p>Settings</p>
+                </a>
+            </li> -->
+            <li class="divider" *ngIf="isNotMobileMenu()"></li>
+        <li *ngFor="let menuItem of menuItems" routerLinkActive="active" class="{{menuItem.class}}">
+            <a [routerLink]="[menuItem.path]">
+                <i class="{{menuItem.icon}}"></i>
+                <p>{{menuItem.title}}</p>
+            </a>
+        </li>
+    </ul>
+</div>

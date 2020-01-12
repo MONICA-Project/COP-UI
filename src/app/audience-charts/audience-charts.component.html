@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="header">
+            <button class="btn pull-right btn-primary" (click)="downloadData()"><span class="ti-download"></span> Download data</button>
+          <h4 class="title">Sound levels in audience - {{obj.name}} ({{obj.id}})</h4>
+          <p class="category">Maximum allowable values are in accordance with French regulation</p>
+          
+        </div>
+        <div class="content example-header">
+          <div class="row">
+            <div class="col-md-9">
+              <div>
+                  <div class="alert alert-info" role="alert" *ngIf="!valuesA">
+                    <strong>No dBA Values</strong>
+                  </div>
+                <div class="row" style="border:thin solid #c0c0c0; margin:10px; padding:10px; border-radius: 5px;" *ngIf="valuesA">
+                  <div class="col-md-9" >
+                    <!-- dBA chart -->
+                    <chart (load)="saveInstance2($event.context)" [options]="options2"></chart>
+                  </div>
+                  <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #c0c0c0; padding-top:5px;">
+                    <h6 style="margin-bottom:5px;">15 minutes average</h6>
+                    <div style="color: #68B3C8; font-size:x-large">{{valuesA?.laeq_sound_console | number : '1.0-1'}} dBA</div>
+                    <div style="color: #F3BB45; font-size:x-large">{{valuesA?.laeq_critical_point | number : '1.0-1'}} dBA</div>
+                    <small>{{valuesA?.timestamp | date:'medium'}}</small>
+                  </div>
+                  <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #DD0330; padding-top:5px;">
+                    <h6 style="margin-bottom:5px;">Maximum allowable</h6>
+                    <div style="color: #DD0330; font-size:x-large">{{valuesA?.laeq_limit | number : '1.0-1'}} dBA</div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="alert alert-info" role="alert" *ngIf="!valuesC">
+                    <strong>No dBC Values</strong>
+                  </div>
+                <div class="row" style="border:thin solid #c0c0c0; margin:10px; padding:10px; border-radius: 5px;" *ngIf="valuesC">
+                  <div class="col-md-9">
+                    <!-- dBC chart -->
+                    <chart (load)="saveInstance($event.context)" [options]="options"></chart>
+                  </div>
+                  <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #c0c0c0; padding-top:5px;">
+                    <h6 style="margin-bottom:5px;">15 MINUTES AVERAGE</h6>
+                    <div style="color: #68B3C8; font-size:x-large">{{valuesC?.lceq_sound_console | number : '1.0-1'}} dBC</div>
+                    <div style="color: #F3BB45; font-size:x-large">{{valuesC?.lceq_critical_point | number : '1.0-1'}} dBC</div>
+                    <small>{{valuesC?.timestamp | date:'medium'}}</small>
+                  </div>
+                  <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #DD0330; padding-top:5px;">
+                    <h6 style="margin-bottom:5px;">Maximum allowable</h6>
+                    <div style="color: #DD0330; font-size:x-large">{{valuesC?.lceq_limit | number : '1.0-1'}} dBC</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div style="border:thin solid #DD0330; margin:10px; padding:5px; border-radius: 5px;">
+                  <!-- <button class="btn btn-sm pull-right" (click)="getIncidents()"><span class="ti-reload"></span></button> -->
+                <h5 class="text-center">Exceedings:
+                  <span style="color: #DD0330;">{{exceedings.length}}</span>
+                </h5>
+                <hr>
+                <ul class="exceed-list">
+                  <li *ngFor="let e of exceedings">{{e.microphoneType}} at {{e.timestamp | date:'mediumTime'}}</li>
+                </ul>
+                <!-- <button class="btn" (click)="updateChart()">Test add</button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    Highcharts.wrap(Highcharts.Series.prototype, 'applyZones', function (proceed) {
+      proceed.apply(this, Array.prototype.slice.call(arguments, 1));
+      if (this.zones.length === 0) {
+        if (this.graph) {
+          this.graph.show();
+        }
+        if (this.area) {
+          this.area.show();
+        }
+      }
+    });
+  </script>

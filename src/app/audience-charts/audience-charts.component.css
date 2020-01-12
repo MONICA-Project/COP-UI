@@ -1,0 +1,12 @@
+chart {
+    width: 100% !important;
+   /* height:100% !important; */
+    margin: 0 auto;
+    display: block;
+    /* padding: 25px; */
+}
+
+.exceed-list {
+    max-height: 250px;
+    overflow-y: auto;
+  }

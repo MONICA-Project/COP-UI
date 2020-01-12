@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-md-12">
+      <div class="alert alert-info" *ngIf="saveSuccess">
+          <button aria-hidden="true" class="close" type="button" (click)="clearSuccess()">×</button>
+          <span><b>SAVED</b><br>You're changes have been saved</span>
+        </div>
+        <div class="alert alert-warning" *ngIf="saveError">
+          <button aria-hidden="true" class="close" type="button" (click)="clearError()">×</button>
+          <span><b>NOT SAVED</b><br>Your changes could not be saved</span>
+        </div>
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Staff</h4>
+        <p class="category">Wearing smart glasses</p>
+      </div>
+      <div class="content example-header">
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+      </div>
+      <div class="example-container">
+        <mat-table [dataSource]="dataSource" matSort>
+          <!-- Role Column -->
+          <ng-container matColumnDef="role">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> ROLE </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <!-- {{row.thingTemplate}}  -->
+              <div>
+                  <img [src]="getIconByType(row.role)" alt=""> 
+                  <select style="width: 70%" (change)="updateRole($event.target.value, row)">
+                      <option *ngFor="let object of objects" [ngValue]="object" [selected]="object.value == row.role">{{object.viewValue}}</option>
+                  </select>
+              </div>
+            </mat-cell>
+          </ng-container>
+          <!-- First name Column -->
+          <ng-container matColumnDef="fullName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> NAME </mat-header-cell>
+            <!-- <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell> -->
+            <mat-cell *matCellDef="let row"> 
+              <input type="text" [(ngModel)]="row.fullName" style="width:80%" (change)="updateName(row)">
+              <!-- <button class="btn btn-sm" (click)="saveName(row)">Save</button> -->
+            </mat-cell>
+          </ng-container>
+          <!-- Phone Column -->
+          <!-- <ng-container matColumnDef="phone">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> PHONE </mat-header-cell>
+            <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.phone}} </mat-cell>
+          </ng-container> -->
+          <!-- Email Column -->
+          <!-- <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </mat-header-cell>
+            <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.email}} </mat-cell>
+          </ng-container> -->
+          <!-- Active Column -->
+          <ng-container matColumnDef="active">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> STATUS </mat-header-cell>
+            <mat-cell *matCellDef="let row"> 
+              <!-- {{row.active}}  -->
+              <span class="label label-success status-label" title="" *ngIf="row.active" title="Click to inactivate" (click)="toggleActive(false, row)">Active</span>
+              <span class="label label-danger status-label" title="" *ngIf="!row.active" title="Click to activate" (click)="toggleActive(true, row)">Inactive</span>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;">
+          </mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[25, 50, 100]" *ngIf="count>25"></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

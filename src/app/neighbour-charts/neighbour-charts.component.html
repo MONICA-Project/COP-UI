@@ -1,0 +1,115 @@
+
+  
+  <div class="row" style="margin-top:25px;">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="header">
+          <button class="btn pull-right btn-primary" (click)="downloadData()">
+            <span class="ti-download"></span> Download data</button>
+          <h4 class="title">Sound levels in neighbour area - {{obj.name}} ({{obj.id}}) (Exceedings: 
+            <span style="color: #029E6F;" *ngIf="exceedingsOverall.length == 0 && exceedingsOctave.length == 0">NO</span>
+            <span style="color: #DD0330;" *ngIf="exceedingsOverall.length > 0 || exceedingsOctave.length > 0">YES</span>)</h4>
+          <p class="category">Maximum allowable values are in accordance with French regulation</p>
+  
+        </div>
+        <div class="content example-header">
+          <div class="row">
+  
+              <div class="col-md-12">
+                  <h4>Overall Sound level</h4>
+              </div>
+            <div class="col-md-9">
+              
+              <div>
+                <div class="row" style="border:thin solid #c0c0c0; margin:10px; padding:10px; border-radius: 5px;">
+                  <div class="col-md-9">
+                    <!-- dBA chart -->
+                    <chart (load)="saveInstance($event.context)" [options]="options"></chart>
+                  </div>
+                  <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #c0c0c0; padding-top:5px;">
+                    <h6 style="margin-bottom:5px;">15 minutes average</h6>
+                    <div style="color: #68B3C8; font-size:large">{{valuesOverall?.laeq | number : '1.0-1'}} dBA</div>
+                    <div style="color: #F3BB45; font-size:large">{{valuesStage1?.laeq | number : '1.0-1'}}  dBA</div>
+                    <div style="color: #7AC29A; font-size:large">{{valuesStage2?.laeq | number : '1.0-1'}} dBA</div>
+                    <div style="color: #FFB4A0; font-size:large">{{valuesStage3?.laeq | number : '1.0-1'}} dBA</div>
+                  </div>
+                  <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #DD0330; padding-top:5px;">
+                    <h6 style="margin-bottom:5px;">Maximum allowable</h6>
+                    <div style="color: #DD0330; font-size:large">{{valuesOverall?.laeq_limit_current}} dBA (current)</div>
+                    <div style="font-size:large">{{valuesOverall?.laeq_limit_min}} dBA (<small>at {{valuesOverall?.timestamp | date:'mediumTime'}})</small></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <!-- <button class="btn"(click)="doUpdateOctave()">Test</button> -->
+              <div style="border:thin solid #DD0330; margin:10px; padding:5px; border-radius: 5px;" *ngIf="exceedingsOverall.length > 0">
+                <h5 class="text-center">Exceedings:
+                  <span style="color: #DD0330;">{{exceedingsOverall.length}}</span>
+                </h5>
+                <hr>
+                <ul class="exceed-list">
+                    <li *ngFor="let e of exceedingsOverall">{{e.microphoneType}} at {{e.timestamp | date:'mediumTime'}}</li>
+                  </ul>
+              </div>
+              <!-- NO EXCEEDINGS -->
+              <div style="border:thin solid #029E6F; margin:10px; padding:5px; border-radius: 5px;" *ngIf="exceedingsOverall.length == 0">
+                <h5 class="text-center">Exceedings:
+                  <span style="color: #029E6F;">0</span>
+                </h5>
+              </div>
+            </div>
+  
+            <div class="col-md-12">
+                <h4>Octave bands</h4>
+            </div>
+            <div class="col-md-9">
+              <div>
+                <div class="row" style="border:thin solid #c0c0c0; margin:10px; padding:10px; border-radius: 5px;">
+                  <div class="col-md-9">
+                    <!-- 125 Hz chart -->
+                    <chart (load)="saveInstance2($event.context)" [options]="options2"></chart>
+                  </div>
+                  <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #c0c0c0; padding-top:5px;">
+                    <h6 style="margin-bottom:5px;">15 MINUTES AVERAGE</h6>
+                    <div style="color: #68B3C8; font-size:large">{{selectedValuesOctaveBands?.measured | number : '1.0-1'}} dB</div>
+                    <div style="color: #F3BB45; font-size:large">{{selectedValuesOctaveBands?.stage1 | number : '1.0-1'}} dB</div>
+                    <div style="color: #7AC29A; font-size:large">{{selectedValuesOctaveBands?.stage2 | number : '1.0-1'}} dB</div>
+                    <div style="color: #FFB4A0; font-size:large">{{selectedValuesOctaveBands?.stage3 | number : '1.0-1'}} dB</div>
+                  </div>
+                  <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #DD0330; padding-top:5px;">
+                    <h6 style="margin-bottom:5px;">Maximum allowable</h6>
+                    <div style="color: #DD0330; font-size:large">{{selectedValuesOctaveBands?.currentLimit}} dB (current)</div>
+                    <div style="font-size:large">{{selectedValuesOctaveBands?.minLimit}} dB (at {{valuesOctaveBands?.timestamp | date:'mediumTime'}})</div>
+                  </div>
+                  <div class="col-md-3 text-center" style="margin-top:20px; border:thin solid #c0c0c0; padding-top:5px;">
+                    <h6 style="margin-bottom:5px;">select frequency </h6>
+                    <select (change)="onChangeFreq($event.target.value)" style="width:100%; margin-bottom:10px;">
+                      <option *ngFor="let object of frequencies" [ngValue]="object" [selected]="object?.viewValue == selectedFrequency">{{object?.viewValue}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div style="border:thin solid #DD0330; margin:10px; padding:5px; border-radius: 5px;"  *ngIf="exceedingsOctave.length > 0">
+                <h5 class="text-center">Exceedings:
+                  <span style="color: #DD0330;">{{exceedingsOctave.length}}</span>
+                </h5>
+                <hr>
+                <ul class="exceed-list">
+                  <li *ngFor="let e of exceedingsOctave">{{e.microphoneType}} at {{e.timestamp | date:'mediumTime'}}</li>
+                </ul>
+              </div>
+              <!-- NO EXCEEDINGS -->
+              <div style="border:thin solid #029E6F; margin:10px; padding:5px; border-radius: 5px;" *ngIf="exceedingsOctave.length == 0">
+                  <h5 class="text-center">Exceedings:
+                    <span style="color: #029E6F;">0</span>
+                  </h5>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

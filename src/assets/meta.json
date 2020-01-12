@@ -1,0 +1,17 @@
+{
+    "uuid": "63b37a3d-ef11-490f-b696-f953dfdfea8f",
+    "version_number": 45,
+    "build_date": 1553242936233,
+    "pleasantness": 75,
+    "device_manufacturer": "samsung",
+    "record_utc": 1570972043027,
+    "version_name": "1.2.9",
+    "user_profile": "NONE",
+    "time_length": 65,
+    "device_model": "SM-J330FN",
+    "leq_mean": 76.97,
+    "noiseparty_tag": "FDSSTRAS",
+    "gain_calibration": 0.46,
+    "tags": "indoor,chatting",
+    "device_product": "j3y17ltexx"
+}

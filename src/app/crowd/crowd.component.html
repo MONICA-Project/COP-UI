@@ -1,0 +1,90 @@
+<div class="container-fluid">
+    <div class="row">
+       <!-- <div class="col-lg-3 col-sm-6">
+            <overview-card [values]="overview_1"></overview-card>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <overview-card [values]="overview_3"></overview-card>
+        </div>-->
+        <div class="col-lg-3 col-sm-6">
+            <overview-card [values]="overview_2"></overview-card>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <overview-card [values]="overview_4"></overview-card>
+        </div>
+    </div>
+    <!-- <map-cop [id]="'crowd'" [pre_selected_filters]="selFilters"></map-cop> -->
+    <!-- <br>
+    <hr> -->
+    <!-- GATE COUNT -->
+    <div class="row">
+        <div class="margin-component col-md-7">
+            <zone-capacity></zone-capacity>
+        </div>
+        <div class="margin-component col-md-5">
+            <div *ngFor="let gc of gatecounts">
+                <div class="card">
+                    <div class="content">
+                        <div class="row">
+                            <h4 class="title" style="padding: 5px 20px 20px;">{{gc?.title}}</h4>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th>
+                                        <span class="display-4 icon-success" style="font-size:4rem">
+                                            <i class="ti-shift-right-alt"></i>
+                                        </span>
+                                    </th>
+                                    <!-- <td><span class="display-4">IN</span></td> -->
+                                    <td style="text-align:right;">
+                                        <span class="display-4" style="font-size:2.5rem; color:#252422;  ">
+                                            {{gc?.value_in}}
+                                        </span>
+                                        <br>
+                                        <small>visitors in</small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <span class="display-4 icon-danger" style="font-size:4rem">
+                                            <i class="ti-shift-left-alt"></i>
+                                        </span>
+                                    </th>
+                                    <!-- <td><span class="display-4">OUT</span></td> -->
+                                    <td style="text-align:right;">
+                                        <span class="display-4" style="font-size:2.5rem; color:#252422;">
+                                            {{gc?.value_out}}
+                                        </span>
+                                        <br>
+                                        <small>visitors out</small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <span class="display-4" style="font-size:4rem">
+                                            <i class="ti-shift-left-alt"></i>
+                                            <i class="ti-shift-right-alt"></i>
+                                        </span>
+                                    </th>
+                                    <!-- <td><span class="display-4">TOTAL</span></td> -->
+                                    <td style="text-align:right;">
+                                        <span class="display-4" style="font-size:2.5rem; color:#252422;">
+                                            {{gc?.value_total}}
+                                        </span>
+                                        <br>
+                                        <small>Total</small>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="footer">
+                            <hr />
+                            <div class="stats">
+                                <i class="ti-time"></i> {{gc?.time}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

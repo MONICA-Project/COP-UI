@@ -1,0 +1,107 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Security Incidents</h4>
+        <p class="category">Field reports, overcrowding, fight etc.</p>
+        <div style="margin:10px; text-align: left;" class="pull-right">
+          <button class="btn" (click)="dismissAll()" title="Dismiss all" *ngIf="incidents?.length > 0">
+            <i class="ti-close"></i> Dismiss all
+          </button>
+          <button class="btn btn-fill" (click)="resolveAll()" title="Resolve all" *ngIf="incidents?.length > 0">
+            <i class="ti-check"></i> Resolve all
+          </button>
+
+          <button class="btn btn-primary" (click)="reload()" title="Reload incidents list">
+            <span class="ti-reload"></span> Reload
+          </button>
+        </div>
+        <br>
+      </div>
+      <br>
+
+      <div class="content example-header">
+        <!-- <button (click)="test()">Test</button> -->
+        <ngui-map style="height:0px;" id="map" zoom="17" scrollwheel="false" [center]="centerTest" (mapReady$)="onMapReady($event)"
+          (mapClick)="onMapClick($event)" (idle)="onIdle($event)" mapTypeId="ROADMAP"></ngui-map>
+        <div *ngIf="loader">Loading...</div>
+        <div *ngIf="incidents?.length == 0 && !loader">
+          <br>
+          <div class="alert alert-info" role="alert">
+            <strong>No incidents</strong> have been reported so far</div>
+        </div>
+
+        <div *ngIf="incidents?.length > 0 && !loader">
+          <div class="row">
+    
+            <div class="col-md-6" *ngFor="let i of incidents">
+              <div style="border:thin solid #66615B; margin:10px; padding:15px;">
+              <!-- WHAT -->
+              <p>
+                <span class="label" [ngClass]="getLabelColor(i.status)">{{i.status}}</span>
+              </p>
+              <p class="description">{{i.type}}: {{i.description}}</p>
+              <p class="probability">Probability: {{i.probability}}%</p>
+              <p class="time">{{i.incidenttime | date :'medium'}}</p>
+              <span class="label label-info" *ngIf="i.mediaType">From: {{i.wbid}}</span>
+
+              <div style="margin:10px; text-align: right;">
+                <button class="btn btn-xs" (click)="dismissIncident(i)">
+                  <i class="ti-close" title="Dismiss"></i>
+                </button>
+                <button class="btn btn-xs btn-fill" (click)="resolveIncident(i)">
+                  <i class="ti-check" title="Resolve"></i>
+                </button>
+              </div>
+
+              <!-- Send message -->
+              <div *ngIf="i.mediaType">
+                <hr>
+                <span class="description">Send message to {{i.wbid}}</span>
+                <send-message [wbid]="i.wbid"></send-message>
+              </div>
+              <hr>
+              <br>
+
+              <!-- WHERE -->
+              <div *ngIf="i.latLng">
+                <ngui-map style="height:200px;" [center]="i.latLng" zoom="16" [fullscreenControl]="true" [scrollwheel]="false">
+                  <marker [position]="i.latLng"></marker>
+                </ngui-map>
+              </div>
+
+              <div *ngIf="i.mediaType == 'picture'">
+                <img [src]="blobs[i.index]" *ngIf="!imageIsLoading; else noImageFound" style="width:100%;">
+              </div>
+
+              <div id="container" *ngIf="i.mediaType == 'video'">
+                <video [src]="videos[i.index]" xautoplay="autoplay" xloop="loop" controls style="width:100%;"></video>
+              </div>
+            </div>
+
+            </div>
+            
+          </div>
+          <!-- pager -->
+          <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a (click)="setPage(1)">First</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+            </li>
+            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+              <a (click)="setPage(page)">{{page}}</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+              <a (click)="setPage(pager.currentPage + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+              <a (click)="setPage(pager.totalPages)">Last</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

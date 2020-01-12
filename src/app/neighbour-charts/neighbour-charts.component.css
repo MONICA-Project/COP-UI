@@ -1,0 +1,24 @@
+chart {
+    width: 100% !important;
+   /* height:100% !important; */
+    margin: 0 auto;
+    display: block;
+    /* padding: 25px; */
+}
+
+.point{
+    color:white;
+    margin:10px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.point-red{
+    background-color: #DD0330;
+}
+.point-green{
+    background-color: #029E6F;
+}
+.point-yellow{
+    background-color: #F3BB45;
+}

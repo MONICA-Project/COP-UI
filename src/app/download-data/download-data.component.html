@@ -1,0 +1,65 @@
+<div class="row" style="margin-top:25px;">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Download sound level data</h4>
+        <p class="category">Select meter, measurement type and timespan</p>
+      </div>
+      <div class="content example-header">
+        <div class="row">
+          <div class="col-md-12">
+            <form>
+              <!-- METER/TYPE -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Meter</label>
+                    <select style="width:100%" class="form-control border-input" (change)="onChangeMeter($event.target.value)">
+                      <option *ngFor="let object of soundMeters" [ngValue]="object" [selected]="object?.name == selectedSoundMeter">{{object?.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Measurement Type</label>
+                    <select style="width:100%" class="form-control border-input" (change)="onChangeType($event.target.value)">
+                      <option *ngFor="let object of measurementTypes" [ngValue]="object" [selected]="object?.value == selectedMeasurementTypes">{{object?.viewValue}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- FROM/TO -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>From</label>
+                    <input class="form-control border-input" name="fromDate" type="date" value="" [(ngModel)]="fromDate">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>To</label>
+                    <input class="form-control border-input" name="toDate" type="date" value="" [(ngModel)]="toDate">
+                  </div>
+                </div>
+              </div>
+              <!-- LOADER -->
+              <div *ngIf="showLoader">
+                Downloading...
+              </div>
+              <!-- NOTIFICATION ERROR -->
+              <div class="alert alert-danger" role="alert" *ngIf="showErrorMessage">
+                <strong>Could not download</strong> please select another meter, measurement type or timespan
+              </div>
+              <!-- DOWNLOAD BUTTON -->
+              <div class="text-right">
+                <button class="btn btn-info btn-fill btn-wd" type="submit" (click)="doDownload();">Download data</button>
+              </div>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
