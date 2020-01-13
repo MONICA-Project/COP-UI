@@ -6,6 +6,6 @@
 export const environment = {
   production: false,
   apiUrl: 'https://portal.monica-cloud.eu/MOVIDA/cop/api/',
-  signalRUrl: 'https://portal.monica-cloud.eu/MOVIDA/cop/hub/signalR/wearableupdate',
+  signalRUrl: 'https://portal.monica-cloud.eu/MOVIDA/cop/hub/signalR/COPUpdate',
   baseUrl: '/MOVIDA/cop/ui',
 };
