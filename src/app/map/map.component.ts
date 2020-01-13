@@ -894,13 +894,13 @@ export class MapComponent implements OnInit, OnDestroy {
 
   getZonePositions() {
     try {
-      // let subB = this.zoneService.getAllZones().subscribe(data => {
-      //   this.setupPositions(data);
-      //   console.log('All zones', data);
-      // }, error => {
-      //   console.log("error", error);
-      // });
-      // this.subscriptions.push(subB);
+      let subB = this.zoneService.getAllZones().subscribe(data => {
+        this.setupPositions(data);
+        console.log('All zones', data);
+      }, error => {
+        console.log("error", error);
+      });
+      this.subscriptions.push(subB);
 
       // // Beer stands
       // let subB = this.zoneService.getBeerStands().subscribe(data => {
@@ -1937,59 +1937,59 @@ export class MapComponent implements OnInit, OnDestroy {
       ],
         // Event
         event: [
-        //   {
-        //   name: Filter.ATM,
-        //   selected: false
-        // }, {
-        //   name: Filter.Attractions,
-        //   selected: false
-        // }, {
-        //   name: Filter.BeerStands,
-        //   selected: false
-        // }, {
-        //   name: Filter.CocktailStands,
-        //   selected: false
-        // }, {
-        //   name: Filter.CommandCenter,
-        //   selected: false
-        // }, {
-        //   name: Filter.Entrance,
-        //   selected: false
-        // }, {
-        //   name: Filter.EmergencyExits,
-        //   selected: false
-        // }, {
-        //   name: Filter.FastFood,
-        //   selected: false
-        // }, {
-        //   name: Filter.FirstAidPoints,
-        //   selected: false
-        // }, {
-        //   name: Filter.HandicappedToilet,
-        //   selected: false
-        // }, {
-        //   name: Filter.Restaurant,
-        //   selected: false
-        // }, {
-        //   name: Filter.Rides,
-        //   selected: false
-        // }, 
+          {
+          name: Filter.ATM,
+          selected: false
+        }, {
+          name: Filter.Attractions,
+          selected: false
+        }, {
+          name: Filter.BeerStands,
+          selected: false
+        }, {
+          name: Filter.CocktailStands,
+          selected: false
+        }, {
+          name: Filter.CommandCenter,
+          selected: false
+        }, {
+          name: Filter.Entrance,
+          selected: false
+        }, {
+          name: Filter.EmergencyExits,
+          selected: false
+        }, {
+          name: Filter.FastFood,
+          selected: false
+        }, {
+          name: Filter.FirstAidPoints,
+          selected: false
+        }, {
+          name: Filter.HandicappedToilet,
+          selected: false
+        }, {
+          name: Filter.Restaurant,
+          selected: false
+        }, {
+          name: Filter.Rides,
+          selected: false
+        }, 
         {
           name: Filter.Sensors,
           selected: false
         }, 
-        // {
-        //   name: Filter.Shops,
-        //   selected: false
-        // }, 
-        // {
-        //   name: Filter.Stages,
-        //   selected: false
-        // }, 
-        // {
-        //   name: Filter.Toilets,
-        //   selected: false
-        // }, 
+        {
+          name: Filter.Shops,
+          selected: false
+        }, 
+        {
+          name: Filter.Stages,
+          selected: false
+        }, 
+        {
+          name: Filter.Toilets,
+          selected: false
+        }, 
         {
           name: Filter.Zone,
           selected: false

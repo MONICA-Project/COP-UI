@@ -11,14 +11,14 @@ export interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-    { path: '/sound', title: 'Sound',  icon: 'ti-volume', class: '' },
+    // { path: '/sound', title: 'Sound',  icon: 'ti-volume', class: '' },
     { path: '/maps', title: 'Map',  icon: 'ti-map', class: '' },
-    { path: '/alerts', title: 'Alerts',  icon: 'ti-alert', class: '' },
-    { path: '/crowd', title: 'Crowd',  icon: 'ti-user', class: '' },
+    // { path: '/alerts', title: 'Alerts',  icon: 'ti-alert', class: '' },
+    // { path: '/crowd', title: 'Crowd',  icon: 'ti-user', class: '' },
     // { path: '/audience', title: 'Audience Area',  icon: 'ti-user', class: '' },
     // { path: '/neighbour', title: 'Neighbour Area',  icon: 'ti-direction-alt', class: '' },
     // { path: '/restingarea', title: 'Resting Area',  icon: 'ti-control-pause', class: '' },
-   // { path: '/staff', title: 'Staff',  icon: 'ti-id-badge', class: '' },
+   { path: '/staff', title: 'Staff',  icon: 'ti-id-badge', class: '' },
     // { path: '/download', title: 'Download Data',  icon: 'ti-download', class: '' },
     
     // { path: 'user', title: 'User Profile',  icon:'ti-user', class: '' },

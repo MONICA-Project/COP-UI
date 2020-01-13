@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://portal.monica-cloud.eu/MOVIDA/cop/api/',
-  signalRUrl: 'https://portal.monica-cloud.eu/MOVIDA/cop/hub/signalR/COPUpdate',
+  apiUrl: 'http://localhost:50765/',
+  signalRUrl: 'http://localhost:50765/signalR/COPUpdate',
   baseUrl: '/MOVIDA/cop/ui',
 };
