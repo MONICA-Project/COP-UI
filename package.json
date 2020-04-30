@@ -39,7 +39,7 @@
     "chartist": "0.9.4",
     "core-js": "2.4.1",
     "express": "^4.15.3",
-    "jquery": "1.12.4",
+    "jquery": "3.5.0",
     "moment": "2.18.1",
     "ng2-ion-range-slider": "^2.0.0",
     "node-sass": "^4.13.0",
